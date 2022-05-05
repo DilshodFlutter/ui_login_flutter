@@ -1,13 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MinimalLogin extends StatefulWidget {
-  const MinimalLogin({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  // final VoidCallback showRegisterPage;
+  // const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
 
   @override
-  State<MinimalLogin> createState() => _MinimalLoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _MinimalLoginState extends State<MinimalLogin> {
+class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim());
+  }
+
+
+  @override
+  void dispose(){
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,10 +61,11 @@ class _MinimalLoginState extends State<MinimalLogin> {
                       color: Colors.grey[200],
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(12)),
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
                           border: InputBorder.none, hintText: "Email"),
                     ),
                   )),
@@ -58,11 +78,12 @@ class _MinimalLoginState extends State<MinimalLogin> {
                       color: Colors.grey[200],
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(12)),
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: TextField(
+                      controller: _passwordController,
                       obscureText: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none, hintText: "Password"),
                     ),
                   )),
@@ -71,17 +92,20 @@ class _MinimalLoginState extends State<MinimalLogin> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.blue,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Sign In",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w500),
+                child: GestureDetector(
+                  onTap: signIn,
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.blue,
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
                 ),
