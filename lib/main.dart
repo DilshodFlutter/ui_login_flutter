@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ui_login_flut/src/ui/auth/main_page.dart';
-import 'package:ui_login_flut/src/ui/login_page.dart';
-
 void main()  async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+ // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -20,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: const MainPage(),
     );
   }
 }
